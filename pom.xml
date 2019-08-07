@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.project.test.testrailListener</groupId>
+	<artifactId>testrailListener</artifactId>
+	<packaging>jar</packaging>
+	<version>1.0</version>
+	<name>TestRail Listener</name>
+
+	<properties>
+		<gson-version>2.8.1</gson-version>
+		<testng-version>6.11</testng-version>
+		<commons-httpclient-version>4.5.3</commons-httpclient-version>
+		<log4j-version>1.2.16</log4j-version>
+		<maven.autoincrement.plugin.version>2.0</maven.autoincrement.plugin.version>
+		<maven.javadoc.plugin.version>2.10.4</maven.javadoc.plugin.version>
+		<maven.release.plugin.version>2.5.3</maven.release.plugin.version>
+		<java.version>1.8</java.version>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>${gson-version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>${testng-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>${commons-httpclient-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j-version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>*.classpath</exclude>
+					<exclude>*.project</exclude>
+				</excludes>
+			</resource>
+		</resources>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>${maven.javadoc.plugin.version}</version>
+					<configuration>
+						<links>
+							<link>http://download.oracle.com/javase/6/docs/api/</link>
+						</links>
+						<detectLinks>true</detectLinks>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>${maven.release.plugin.version}</version>
+					<configuration>
+						<autoVersionSubmodules>true</autoVersionSubmodules>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>autoincrement-versions-maven-plugin</artifactId>
+					<version>${maven.autoincrement.plugin.version}</version>
+					<executions>
+						<execution>
+							<id>update-pom-versions</id>
+							<goals>
+								<goal>increment</goal>
+								<goal>commit</goal>
+							</goals>
+							<phase>install</phase>
+							<configuration>
+								<autoIncrementVersion>true</autoIncrementVersion>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+	</build>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>autoincrement-versions-maven-plugin</id>
+			<name>autoincrement-versions-maven-plugin</name>
+			<url>http://autoincrement-versions-maven-plugin.googlecode.com/svn/repo</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+</project>
