@@ -2,7 +2,7 @@ package com.project.test.testrailintegration.config;
 
 import java.util.Properties;
 
-import com.project.test.testrailintegration.TestRailReportListener;
+import com.project.test.testrailintegration.TestRailListener;
 import com.project.test.testrailintegration.api.client.method.ConfigsRequest;
 import com.project.test.testrailintegration.core.LogUtilities;
 
@@ -28,7 +28,7 @@ public class Config {
     if (!initComplete) {
       initComplete = true;
       try {
-        prop.load(TestRailReportListener.class.getClassLoader()
+        prop.load(TestRailListener.class.getClassLoader()
             .getResourceAsStream(reportListenerPropertiesFile));
         USER = prop.getProperty(propertyUserEmail);
         API_KEY = prop.getProperty(propertyUserApiKey);

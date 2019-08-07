@@ -36,7 +36,7 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
-public class TestRailReportListener implements ITestListener {
+public class TestRailListener implements ITestListener {
 
   private static final Pattern TEST_NAME = Pattern.compile("^C(\\d+)_.+");
   private TestRun run;
