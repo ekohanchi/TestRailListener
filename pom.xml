@@ -15,6 +15,7 @@
 		<testng-version>6.11</testng-version>
 		<commons-httpclient-version>4.5.3</commons-httpclient-version>
 		<log4j-version>1.2.16</log4j-version>
+		<slf4j-version>1.7.5</slf4j-version>
 		<maven.autoincrement.plugin.version>2.0</maven.autoincrement.plugin.version>
 		<maven.javadoc.plugin.version>2.10.4</maven.javadoc.plugin.version>
 		<maven.release.plugin.version>2.5.3</maven.release.plugin.version>
@@ -40,11 +41,15 @@
 			<artifactId>httpclient</artifactId>
 			<version>${commons-httpclient-version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>${log4j-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j-version}</version>
 		</dependency>
 	</dependencies>
 

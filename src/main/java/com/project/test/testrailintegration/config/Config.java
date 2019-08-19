@@ -15,9 +15,9 @@ public class Config {
   private static String propertyUserEmail = "TestRail.User.Email";
   private static String propertyUserApiKey = "TestRail.User.APIKEY";
   private static String propertyProjectID = "TestRail.ProjectID";
-  public static final String PROTOCOL = "https";
-  public static final String HOST = "";
-  public static final int PORT = 443;
+  public static final String PROTOCOL = "http";
+  public static final String HOST = "localhost";
+  public static final int PORT = 8000;
   public static final String PATH = "index.php";
   public static final String API_PATH = "/api/v2/";
   public static String USER;

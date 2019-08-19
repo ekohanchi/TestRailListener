@@ -1,6 +1,7 @@
 package com.project.test.testrailintegration.core;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.testng.Reporter;
 
 public final class LogUtilities {
@@ -19,6 +20,8 @@ private final static int CHARCOUNT = 256;
    */
   private LogUtilities() {
     // Exists only to defeat instantiation.
+	  String log4jConfPath = "src/main/resources/log4j.properties";
+	  PropertyConfigurator.configure(log4jConfPath);
   }
 
   /**
