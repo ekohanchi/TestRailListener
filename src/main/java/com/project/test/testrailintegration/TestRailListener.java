@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.testng.ITestContext;
@@ -105,7 +106,7 @@ public class TestRailListener implements ITestListener {
 			if (caseId > 0) {
 				LogUtilities.logInfoMessage(
 						format("RailsIntegrator: save to memory result %s, for test case C%d", status.name(), caseId));
-				TestResult result = testResults.new TestResult(status, caseId);
+				TestResult result = testResults.new TestResult(status, caseId, getTestDuration(tr));
 				testResults.results.add(result);
 				run.case_ids.add(caseId);
 			} else {
@@ -175,10 +176,10 @@ public class TestRailListener implements ITestListener {
 					&& projectCases[projectCasesIndex].id < testResult.getCase_id()) {
 				projectCasesIndex++;
 			}
-			// At this point we may grantee that projectCases[projectCasesIndex].id ==
+			// At this point we can ensure that projectCases[projectCasesIndex].id ==
 			// testResult.case_id
 			// since we deleted not matching records in previous method.
-			if (projectCases[projectCasesIndex].type_id != AUTOMATED.getValue()) {
+			if (projectCases[projectCasesIndex].custom_automation != AUTOMATED.getValue()) {
 				updateTestCaseRequest.markCaseAsAutomated(testResult.getCase_id());
 			}
 		}
@@ -190,5 +191,27 @@ public class TestRailListener implements ITestListener {
 			return -1;
 		}
 		return parseInt(matcher.group(1));
+	}
+	
+	private String getTestDuration(ITestResult result) {
+		try {
+			long duration = (result.getEndMillis() - result.getStartMillis());
+			long ms2mins = TimeUnit.MILLISECONDS.toMinutes(duration);
+			long ms2secs = TimeUnit.MILLISECONDS.toSeconds(duration);
+			long mins2secs = TimeUnit.MINUTES.toSeconds(ms2mins);
+			String durationString = String.format("%dm %ds", ms2mins, ms2secs - mins2secs);
+			
+//			String tmp = String.format("%dm %ds", TimeUnit.MILLISECONDS.toMinutes(duration),
+//					TimeUnit.MILLISECONDS.toSeconds(duration)
+//							- TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration)));
+
+			if (durationString.equals("0m 0s")) {
+				durationString = "0m 1s";
+			}
+
+			return durationString;
+		} catch (Exception ex) {
+			return "0m 1s";
+		}
 	}
 }

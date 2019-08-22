@@ -10,10 +10,12 @@ public class TestResults {
 
     private int case_id;
     private int status_id;
+    private String elapsed;
 
-    public TestResult(ResultStatus status, int caseId) {
+    public TestResult(ResultStatus status, int caseId, String elapsedTime) {
       this.case_id = caseId;
       this.status_id = status.getStatusId();
+      this.elapsed = elapsedTime;
     }
 
     public int getCase_id() {
@@ -32,7 +34,15 @@ public class TestResults {
       this.status_id = status_id;
     }
 
-    @Override
+    public String getElapsed() {
+		return elapsed;
+	}
+
+	public void setElapsed(String elapsed) {
+		this.elapsed = elapsed;
+	}
+
+	@Override
     public int compareTo(TestResult another) {
       return Integer.compare(case_id, another.case_id);
     }
