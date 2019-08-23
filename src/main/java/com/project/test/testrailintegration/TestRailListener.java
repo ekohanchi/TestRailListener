@@ -54,7 +54,7 @@ public class TestRailListener implements ITestListener, ISuiteListener {
 		if (Config.isListenerEnabled()) {
 			ProductProperties.initEnv(testContext.getSuite());
 			run = new TestRun(
-					format("Automated run on %s at %s", getEnv(), getFormattedDateTime()));
+					format("Automated run on %s for ver. %s at %s", getEnv(), appVersion, getFormattedDateTime()));
 			run.project_id = Integer.parseInt(Config.PROJECT_ID);
 			testResults = new TestResults();
 		}
