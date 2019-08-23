@@ -11,11 +11,13 @@ public class TestResults {
     private int case_id;
     private int status_id;
     private String elapsed;
+    private String version;
 
-    public TestResult(ResultStatus status, int caseId, String elapsedTime) {
+    public TestResult(ResultStatus status, int caseId, String elapsedTime, String appVersion) {
       this.case_id = caseId;
       this.status_id = status.getStatusId();
       this.elapsed = elapsedTime;
+      this.version = appVersion;
     }
 
     public int getCase_id() {
@@ -40,6 +42,14 @@ public class TestResults {
 
 	public void setElapsed(String elapsed) {
 		this.elapsed = elapsed;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
 	@Override

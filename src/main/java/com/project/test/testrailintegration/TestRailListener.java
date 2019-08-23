@@ -9,6 +9,22 @@ import static java.lang.Integer.max;
 import static java.lang.Integer.parseInt;
 import static java.lang.String.format;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.testng.ISuite;
+import org.testng.ISuiteListener;
+import org.testng.ITestContext;
+import org.testng.ITestListener;
+import org.testng.ITestResult;
+
 import com.project.test.testrailintegration.api.client.method.AddResultsRequest;
 import com.project.test.testrailintegration.api.client.method.AddTestRunRequest;
 import com.project.test.testrailintegration.api.client.method.CloseTestRunRequest;
@@ -21,35 +37,24 @@ import com.project.test.testrailintegration.api.model.TestResults.TestResult;
 import com.project.test.testrailintegration.api.model.TestRun;
 import com.project.test.testrailintegration.config.Config;
 import com.project.test.testrailintegration.core.CommentReporter;
-import com.project.test.testrailintegration.core.ProductProperties;
 import com.project.test.testrailintegration.core.LogUtilities;
+import com.project.test.testrailintegration.core.ProductProperties;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import org.testng.ITestContext;
-import org.testng.ITestListener;
-import org.testng.ITestResult;
-
-public class TestRailListener implements ITestListener {
+public class TestRailListener implements ITestListener, ISuiteListener {
 
 	private static final Pattern TEST_NAME = Pattern.compile("^C(\\d+)_.+");
 	private TestRun run;
 	private TestResults testResults;
 	private TestCase[] projectCases;
+	private static String appVersion = "";
 
 	@Override
 	public void onStart(ITestContext testContext) {
 		Config.init();
 		if (Config.isListenerEnabled()) {
 			ProductProperties.initEnv(testContext.getSuite());
-			run = new TestRun(format("Automated run on %s at %s", getEnv(), getFormattedDateTime()));
+			run = new TestRun(
+					format("Automated run on %s at %s", getEnv(), getFormattedDateTime()));
 			run.project_id = Integer.parseInt(Config.PROJECT_ID);
 			testResults = new TestResults();
 		}
@@ -106,7 +111,7 @@ public class TestRailListener implements ITestListener {
 			if (caseId > 0) {
 				LogUtilities.logInfoMessage(
 						format("RailsIntegrator: save to memory result %s, for test case C%d", status.name(), caseId));
-				TestResult result = testResults.new TestResult(status, caseId, getTestDuration(tr));
+				TestResult result = testResults.new TestResult(status, caseId, getTestDuration(tr), appVersion);
 				testResults.results.add(result);
 				run.case_ids.add(caseId);
 			} else {
@@ -192,7 +197,7 @@ public class TestRailListener implements ITestListener {
 		}
 		return parseInt(matcher.group(1));
 	}
-	
+
 	private String getTestDuration(ITestResult result) {
 		try {
 			long duration = (result.getEndMillis() - result.getStartMillis());
@@ -200,10 +205,6 @@ public class TestRailListener implements ITestListener {
 			long ms2secs = TimeUnit.MILLISECONDS.toSeconds(duration);
 			long mins2secs = TimeUnit.MINUTES.toSeconds(ms2mins);
 			String durationString = String.format("%dm %ds", ms2mins, ms2secs - mins2secs);
-			
-//			String tmp = String.format("%dm %ds", TimeUnit.MILLISECONDS.toMinutes(duration),
-//					TimeUnit.MILLISECONDS.toSeconds(duration)
-//							- TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration)));
 
 			if (durationString.equals("0m 0s")) {
 				durationString = "0m 1s";
@@ -214,4 +215,25 @@ public class TestRailListener implements ITestListener {
 			return "0m 1s";
 		}
 	}
-}
+
+	public static void setApplicationVersion(String appVer) {
+		appVersion = appVer;
+	}
+
+	private String getApplicationVersion() {
+		return appVersion;
+	}
+
+	@Override
+	public void onStart(ISuite suite) {
+		appVersion = getApplicationVersion();
+		if (appVersion == null || appVersion.isEmpty()) {
+			appVersion = "0.0.0";
+		}
+	}
+
+	@Override
+	public void onFinish(ISuite suite) {
+		// No work to be done here.
+	}
+};
