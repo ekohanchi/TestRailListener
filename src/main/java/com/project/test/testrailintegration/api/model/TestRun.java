@@ -17,4 +17,10 @@ public class TestRun {
     //this.description = description;
     this.case_ids = new HashSet<>();
   }
+  
+  public TestRun(int id, String name) {
+	  this.id = id;
+	  this.name = name;
+	  this.case_ids = new HashSet<>();
+  }
 }

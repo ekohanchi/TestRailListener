@@ -53,8 +53,9 @@ public class TestRailListener implements ITestListener, ISuiteListener {
 		Config.init();
 		if (Config.isListenerEnabled()) {
 			ProductProperties.initEnv(testContext.getSuite());
-			run = new TestRun(
-					format("Automated run on %s for ver. %s at %s", getEnv(), appVersion, getFormattedDateTime()));
+
+			// Adding an empty testRun
+			run = new TestRun("");
 			run.project_id = Integer.parseInt(Config.PROJECT_ID);
 			testResults = new TestResults();
 		}
@@ -123,6 +124,7 @@ public class TestRailListener implements ITestListener, ISuiteListener {
 	@Override
 	public void onFinish(ITestContext context) {
 		if (Config.isListenerEnabled()) {
+			run.name = "Automated run on " + getEnv() + " for ver. " + appVersion + " at " + getFormattedDateTime();
 			run.id = new AddTestRunRequest().createRun(run).id;
 			projectCases = new GetCasesRequest().getProjectCases();
 			addResultsToTestRun();
