@@ -129,7 +129,9 @@ public class TestRailListener implements ITestListener, ISuiteListener {
 			projectCases = new GetCasesRequest().getProjectCases();
 			addResultsToTestRun();
 			updateTestCasesStatuses();
-			new CloseTestRunRequest().closeRun(run);
+			if(Config.testRunsCloseFlag) {
+				new CloseTestRunRequest().closeRun(run);
+			}			
 		}
 	}
 

@@ -3,6 +3,8 @@ package com.project.test.testrailintegration.api.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.project.test.testrailintegration.config.Config;
+
 public class TestRun {
 
   public int id;
@@ -10,7 +12,7 @@ public class TestRun {
   public String description;
   public Set<Integer> case_ids;
   public int project_id;
-  public boolean include_all = false;
+  public boolean include_all = Config.testCasesIncludeAllFlag;
 
   public TestRun(String name) {
     this.name = name;

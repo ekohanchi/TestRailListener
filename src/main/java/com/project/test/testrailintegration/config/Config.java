@@ -17,11 +17,15 @@ public class Config {
 	private static String propertyPort = "Port";
 	private static String propertyPath = "Path";
 	private static String propertlyApiPath = "ApiPath";
+	private static String propertyTestCasesIncludeAll = "TestCases.IncludeAll";
+	private static String propertyTestRunsClose = "TestRuns.Close";
 	public static String PROTOCOL;
 	public static String HOST;
 	public static int PORT;
 	public static String PATH;
 	public static String API_PATH;
+	public static Boolean testCasesIncludeAllFlag;
+	public static Boolean testRunsCloseFlag;
 	private static String testRailListenerPropertiesFile = "TestRailListener.properties";
 	private static String propertyUserEmail = "TestRail.User.Email";
 	private static String propertyUserApiKey = "TestRail.User.APIKEY";
@@ -48,6 +52,8 @@ public class Config {
 			PORT = Integer.parseInt(prop1.getProperty(propertyPort));
 			PATH = prop1.getProperty(propertyPath);
 			API_PATH = prop1.getProperty(propertlyApiPath);
+			testCasesIncludeAllFlag = Boolean.parseBoolean(prop1.getProperty(propertyTestCasesIncludeAll));
+			testRunsCloseFlag = Boolean.parseBoolean(prop1.getProperty(propertyTestRunsClose));
 			commonPropLoaded = true;
 
 		} catch (Exception e) {
